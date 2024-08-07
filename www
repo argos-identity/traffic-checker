@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+var cluster = require('cluster');
+// Time Zone
+process.env.TZ = 'Asia/Seoul';
+
+// // Exception
+process.on('uncaughtException', function(error) {
+	console.log('[%d] uncaughtException : ', process.pid, error.stack);
+});
+if (cluster.isMaster) {
+    // cluster.fork();
+    require('os').cpus().forEach(function() {
+        cluster.fork();
+    });
+    cluster.on('online', function(worker) {
+        console.log('worker ' + worker.process.pid + ' is being executed.');
+    });
+
+    cluster.on('exit', function(worker, code, signal) {
+        var exitCode = worker.process.exitCode;
+        console.log('worker ' + worker.process.pid + ' died ('+exitCode+'). restarting...');
+    });
+} else {
+    require('./server');
+}
