@@ -34,15 +34,15 @@ exports.trafficChecker = [
             const totalDelay = Math.max(idLiveDocDelay, smartIdDelay);
 
             const response = {
-                delaySeconds: Math.round(totalDelay),
-                idLiveDoc: {
+                delaySeconds: Math.round(totalDelay)
+                /*idLiveDoc: {
                     lb_name: "idLiveDoc",
                     requests: idLiveDocTraffic
                 },
                 smartId: {
                     lb_name: "smartId",
                     requests: smartIdTraffic
-                }
+                }*/
             };
             return res.status(200).json(response);
         } catch (error) {
