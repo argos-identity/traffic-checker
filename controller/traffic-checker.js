@@ -106,7 +106,7 @@ async function checkLoadBalancerTraffic(lb) {
                             }
                         ]
                     },
-                    Period: 60,  // 1분간
+                    Period: 180,  // 3분간
                     Stat: "Sum"
                 }
             }
