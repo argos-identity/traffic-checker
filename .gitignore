@@ -1,0 +1,60 @@
+# compiled output
+/dist
+/node_modules
+**/node_modules
+/generated
+
+# Logs
+logs/*
+!logs/.gitkeep
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+server.*
+server.log
+
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.claude/settings.local.json
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Environment
+.env
+.env.*
+.env.local
+.env.*.local
+*/.env
+*/*/.env
+
+# Prisma
+*.db
+*.db-journal
+
+# Docker
+docker-compose.override.yml
+
+# Developer guide (local)
+README.local.md
