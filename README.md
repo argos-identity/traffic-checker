@@ -46,7 +46,7 @@ GET http://localhost:5050/
 {
   "delaySeconds": 0,
   "elb": {
-    "smartId": {
+    "ocr": {
       "requestCount": 4,
       "targetResponseTime": 1.235,
       "activeConnectionCount": 33,
@@ -54,7 +54,7 @@ GET http://localhost:5050/
       "processedBytes": 7171325,
       "healthyHostCount": 0
     },
-    "idLiveDoc": {
+    "idcard": {
       "requestCount": 0,
       "targetResponseTime": 0,
       "activeConnectionCount": 0,
@@ -93,7 +93,7 @@ GET http://localhost:5050/server/ready
 {
   "delaySeconds": 0,
   "elb": {
-    "smartId": {
+    "ocr": {
       "requestCount": 4,
       "targetResponseTime": 1.235,
       "activeConnectionCount": 33,
@@ -101,7 +101,7 @@ GET http://localhost:5050/server/ready
       "processedBytes": 7171325,
       "healthyHostCount": 0
     },
-    "idLiveDoc": {
+    "idcard": {
       "requestCount": 0,
       "targetResponseTime": 0,
       "activeConnectionCount": 0,
@@ -112,7 +112,7 @@ GET http://localhost:5050/server/ready
   }
 }
 ```
-**상태:** smartId 실제 응답 1.235초 < 기준 3초 → 지연 없음
+**상태:** ocr 실제 응답 1.235초 < 기준 3초 → 지연 없음
 
 ---
 
@@ -121,7 +121,7 @@ GET http://localhost:5050/server/ready
 {
   "delaySeconds": 1,
   "elb": {
-    "smartId": {
+    "ocr": {
       "requestCount": 45,
       "targetResponseTime": 4.2,
       "activeConnectionCount": 180,
@@ -129,7 +129,7 @@ GET http://localhost:5050/server/ready
       "processedBytes": 52428800,
       "healthyHostCount": 2
     },
-    "idLiveDoc": {
+    "idcard": {
       "requestCount": 12,
       "targetResponseTime": 2.5,
       "activeConnectionCount": 65,
@@ -140,7 +140,7 @@ GET http://localhost:5050/server/ready
   }
 }
 ```
-**상태:** smartId 4.2초 - 3초 = **1.2초 지연**
+**상태:** ocr 4.2초 - 3초 = **1.2초 지연**
 
 ---
 
@@ -149,7 +149,7 @@ GET http://localhost:5050/server/ready
 {
   "delaySeconds": 4,
   "elb": {
-    "smartId": {
+    "ocr": {
       "requestCount": 120,
       "targetResponseTime": 6.8,
       "activeConnectionCount": 450,
@@ -157,7 +157,7 @@ GET http://localhost:5050/server/ready
       "processedBytes": 157286400,
       "healthyHostCount": 3
     },
-    "idLiveDoc": {
+    "idcard": {
       "requestCount": 85,
       "targetResponseTime": 7.2,
       "activeConnectionCount": 320,
@@ -168,7 +168,7 @@ GET http://localhost:5050/server/ready
   }
 }
 ```
-**상태:** smartId 3.8초 지연, idLiveDoc 3.2초 지연 → **최대 4초**
+**상태:** ocr 3.8초 지연, idcard 3.2초 지연 → **최대 4초**
 
 ---
 
@@ -177,7 +177,7 @@ GET http://localhost:5050/server/ready
 {
   "delaySeconds": 9,
   "elb": {
-    "smartId": {
+    "ocr": {
       "requestCount": 250,
       "targetResponseTime": 11.5,
       "activeConnectionCount": 890,
@@ -185,7 +185,7 @@ GET http://localhost:5050/server/ready
       "processedBytes": 314572800,
       "healthyHostCount": 4
     },
-    "idLiveDoc": {
+    "idcard": {
       "requestCount": 180,
       "targetResponseTime": 9.3,
       "activeConnectionCount": 650,
@@ -196,7 +196,7 @@ GET http://localhost:5050/server/ready
   }
 }
 ```
-**상태:** smartId 8.5초 지연, idLiveDoc 5.3초 지연 → **심각한 과부하**
+**상태:** ocr 8.5초 지연, idcard 5.3초 지연 → **심각한 과부하**
 
 ## delaySeconds 해석
 
@@ -213,23 +213,25 @@ GET http://localhost:5050/server/ready
 delaySeconds = max(0, actualResponseTime - baselineProcessingTime)
 ```
 
-- **smartId**: 기준 처리 시간 3초
-- **idLiveDoc**: 기준 처리 시간 4초
+- **ocr (smartId)**: 기준 처리 시간 3초
+- **idcard (idLiveDoc)**: 기준 처리 시간 4초
 
 **예시:**
-- smartId 실제 응답 6.8초 - 기준 3초 = **3.8초 지연**
-- idLiveDoc 실제 응답 2.5초 - 기준 4초 = **0초** (기준보다 빠름)
+- ocr 실제 응답 6.8초 - 기준 3초 = **3.8초 지연**
+- idcard 실제 응답 2.5초 - 기준 4초 = **0초** (기준보다 빠름)
 - 최종 delaySeconds = max(3.8, 0) = **4초** (반올림)
 
 ## 모니터링되는 Load Balancer
 
-1. **smartId**
+1. **ocr (smartId)**
    - ARN: `arn:aws:elasticloadbalancing:us-east-1:823490195698:loadbalancer/app/smartId/263e5cc08d54751d`
    - 기준 처리 시간: 3초
+   - 역할: OCR 처리
 
-2. **idLiveDoc**
+2. **idcard (idLiveDoc)**
    - ARN: `arn:aws:elasticloadbalancing:us-east-1:823490195698:loadbalancer/app/idLiveDoc/2fe243e0487da131`
    - 기준 처리 시간: 4초
+   - 역할: 신분증 처리
 
 ## CloudWatch 메트릭 설정
 
@@ -317,8 +319,8 @@ info: Response: {"delaySeconds":0,"elb":{...}}
 
 경고 및 에러:
 ```
-warn: No data for metric healthyHostCount on smartId
-error: Error fetching metrics for smartId: ...
+warn: No data for metric healthyHostCount on ocr
+error: Error fetching metrics for ocr: ...
 ```
 
 ## 성능 최적화

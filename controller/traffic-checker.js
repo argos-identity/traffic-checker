@@ -65,8 +65,8 @@ exports.trafficChecker = [
             const response = {
                 delaySeconds: Math.round(totalDelay),
                 elb: {
-                    smartId: smartIdMetrics,
-                    idLiveDoc: idLiveDocMetrics
+                    ocr: smartIdMetrics,
+                    idcard: idLiveDocMetrics
                 }
             };
 
