@@ -4,19 +4,8 @@ const { CloudWatchClient, GetMetricDataCommand } = require("@aws-sdk/client-clou
 var util = require('../common');
 var logger = require('../logger');
 
-// CORS 미들웨어 추가
-const cors = require('cors');
-
-
 const region = "us-east-1";
 const client = new CloudWatchClient({ region });
-
-// CORS 옵션 설정
-const corsOptions = {
-    origin: '*', // 모든 출처 허용
-    methods: ['GET', 'POST'], // 허용할 HTTP 메서드
-    allowedHeaders: ['Content-Type', 'Authorization','Application'] // 허용할 헤더
-};
 
 // Load Balancer 설정
 const LOAD_BALANCERS = {
@@ -32,9 +21,7 @@ const LOAD_BALANCERS = {
     }
 };
 
-exports.trafficChecker = [
-    cors(corsOptions), // CORS 미들웨어 적용
-    async function(req, res) {
+exports.trafficChecker = async function(req, res) {
         logger.log('info', 'Starting traffic check for all load balancers');
 
         try {
@@ -81,8 +68,7 @@ exports.trafficChecker = [
                 message: error.message
             });
         }
-    }
-];
+};
 
 
 // 단일 LB의 모든 메트릭 조회

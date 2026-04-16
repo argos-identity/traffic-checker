@@ -6,5 +6,6 @@ module.exports = function() {
     console.log('[headers]==> ', req.headers);
     console.log('[REQUEST PARAMS BODY]===> ', req.body);
     console.log('[REQUEST PARAMS QUERY===> ', req.query);
+    next();
   }
 };

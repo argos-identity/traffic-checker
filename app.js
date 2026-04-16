@@ -14,11 +14,13 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 
+let checker = require('./middleware/checker');
 let router = require('./routes/traffic-checker');
 let health = require('./routes/health');
 
 app.use(express.urlencoded({ extended: true}));
 app.use(bodyParser.json());
+app.use(checker());
 
 app.use('/', router);
 app.use('/server', health);
