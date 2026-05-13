@@ -50,7 +50,7 @@ exports.trafficChecker = async function(req, res) {
 
             // 3. 응답 구성
             const response = {
-                delaySeconds: parseFloat(totalDelay.toFixed(3)),
+                delaySeconds: Math.ceil(totalDelay),
                 elb: {
                     ocr: smartIdMetrics,
                     idcard: idLiveDocMetrics
