@@ -113,7 +113,7 @@ async function fetchAllMetricsForLoadBalancer(lbKey, lbConfig) {
                         Dimensions: [{ Name: "LoadBalancer", Value: lbConfig.name }]
                     },
                     Period: 300,
-                    Stat: "Sum"
+                    Stat: "Average"
                 }
             },
             {
