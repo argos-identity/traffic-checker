@@ -12,12 +12,12 @@ const LOAD_BALANCERS = {
     smartId: {
         arn: "arn:aws:elasticloadbalancing:us-east-1:823490195698:loadbalancer/app/smartId/263e5cc08d54751d",
         name: "app/smartId/263e5cc08d54751d",
-        processingTime: 3
+        processingTime: 1.0
     },
     idLiveDoc: {
         arn: "arn:aws:elasticloadbalancing:us-east-1:823490195698:loadbalancer/app/idLiveDoc/2fe243e0487da131",
         name: "app/idLiveDoc/2fe243e0487da131",
-        processingTime: 4
+        processingTime: 1.0
     }
 };
 
@@ -50,7 +50,7 @@ exports.trafficChecker = async function(req, res) {
 
             // 3. 응답 구성
             const response = {
-                delaySeconds: Math.round(totalDelay),
+                delaySeconds: parseFloat(totalDelay.toFixed(3)),
                 elb: {
                     ocr: smartIdMetrics,
                     idcard: idLiveDocMetrics
