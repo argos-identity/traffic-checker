@@ -12,11 +12,13 @@ const LOAD_BALANCERS = {
     smartId: {
         arn: "arn:aws:elasticloadbalancing:us-east-1:823490195698:loadbalancer/app/smartId/263e5cc08d54751d",
         name: "app/smartId/263e5cc08d54751d",
+        targetGroup: "targetgroup/smartId/cb2c617ed8741279",
         processingTime: 0.5
     },
     idLiveDoc: {
         arn: "arn:aws:elasticloadbalancing:us-east-1:823490195698:loadbalancer/app/idLiveDoc/2fe243e0487da131",
         name: "app/idLiveDoc/2fe243e0487da131",
+        targetGroup: "targetgroup/idLiveDoc/7c5549444f8a86b4",
         processingTime: 0.5
     }
 };
@@ -146,7 +148,10 @@ async function fetchAllMetricsForLoadBalancer(lbKey, lbConfig) {
                     Metric: {
                         Namespace: "AWS/ApplicationELB",
                         MetricName: "HealthyHostCount",
-                        Dimensions: [{ Name: "LoadBalancer", Value: lbConfig.name }]
+                        Dimensions: [
+                            { Name: "LoadBalancer", Value: lbConfig.name },
+                            { Name: "TargetGroup",  Value: lbConfig.targetGroup }
+                        ]
                     },
                     Period: 300,
                     Stat: "Average"
