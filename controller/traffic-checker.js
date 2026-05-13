@@ -76,7 +76,7 @@ async function fetchAllMetricsForLoadBalancer(lbKey, lbConfig) {
     logger.log('info', `Fetching all metrics for ${lbKey}`);
 
     const endTime = new Date();
-    const startTime = new Date(endTime.getTime() - 300000); // 5분 전
+    const startTime = new Date(endTime.getTime() - 900000); // 15분 전 (완성된 period 데이터 확보)
 
     const params = {
         MetricDataQueries: [
@@ -154,7 +154,8 @@ async function fetchAllMetricsForLoadBalancer(lbKey, lbConfig) {
             }
         ],
         StartTime: startTime,
-        EndTime: endTime
+        EndTime: endTime,
+        ScanBy: "TimestampDescending"
     };
 
     try {
